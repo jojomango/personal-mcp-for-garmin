@@ -1,0 +1,11 @@
+.venv/
+.git/
+.github/
+.gitignore
+.python-version
+__pycache__/
+*.pyc
+tests/
+docs/
+*.mcpb
+.DS_Store

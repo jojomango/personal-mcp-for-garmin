@@ -1,0 +1,168 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/dist/mcpb-manifest-v0.4.schema.json",
+  "manifest_version": "0.4",
+  "name": "connect-personal-mcp",
+  "display_name": "Personal Data for Garmin Connect (unofficial)",
+  "version": "0.3.0",
+  "description": "Read-only access to your own Garmin Connect data (sleep, HRV, Body Battery, workouts) via Garmin's official Personal API. Bring your own key.",
+  "long_description": "Unofficial; not affiliated with or endorsed by Garmin. Runs on your computer and talks only to Garmin's Personal API using your own Personal API key, which stays in your operating system's secure storage. All tools are read-only and every result is attributed to Garmin. Your key is for your own use only under Garmin's Personal API terms; never share it. Create a key at https://connect.garmin.com/app/settings/personalApiToken",
+  "author": {
+    "name": "jojomango",
+    "url": "https://github.com/jojomango"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jojomango/connect-personal-mcp"
+  },
+  "homepage": "https://github.com/jojomango/connect-personal-mcp",
+  "support": "https://github.com/jojomango/connect-personal-mcp/issues",
+  "license": "MIT",
+  "keywords": [
+    "garmin-connect",
+    "health",
+    "fitness",
+    "sleep",
+    "running",
+    "hrv"
+  ],
+  "privacy_policies": [
+    "https://github.com/jojomango/connect-personal-mcp/blob/main/PRIVACY.md"
+  ],
+  "server": {
+    "type": "uv",
+    "entry_point": "src/connect_personal_mcp/server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "connect-personal-mcp"
+      ],
+      "env": {
+        "GARMIN_API_KEY": "${user_config.api_key}",
+        "GARMIN_REGION": "${user_config.region}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Garmin Personal API key",
+      "sensitive": true,
+      "required": true,
+      "description": "Create it at connect.garmin.com/app/settings/personalApiToken (shown only once). For your own use only; never share it."
+    },
+    "region": {
+      "type": "string",
+      "title": "Account region",
+      "required": false,
+      "default": "global",
+      "description": "global for most accounts; cn for China-region (garmin.cn) accounts."
+    }
+  },
+  "tools": [
+    {
+      "name": "daily_summary",
+      "description": "Daily overview: steps, distance, calories, resting heart rate, stress, Body Battery, intensity minutes, floors. Give only start for one day, or start+end for a daily list."
+    },
+    {
+      "name": "sleep",
+      "description": "Sleep: duration, deep/light/REM/awake stages, sleep score and feedback. The date is the day you woke up. Only start: detailed single night; start+end: summaries for the range."
+    },
+    {
+      "name": "heart_rate",
+      "description": "One day of heart rate: resting, max, min and the all-day time series."
+    },
+    {
+      "name": "hrv",
+      "description": "HRV: overnight average, baseline range and status. Only start: single-day detail; start+end: daily summaries."
+    },
+    {
+      "name": "body_battery",
+      "description": "Daily Body Battery reports (charged, drained, highs and lows)."
+    },
+    {
+      "name": "stress",
+      "description": "Daily stress statistics for a date range."
+    },
+    {
+      "name": "steps",
+      "description": "Daily steps, distance and step goal for a date range."
+    },
+    {
+      "name": "hydration",
+      "description": "Daily hydration logs for a date range."
+    },
+    {
+      "name": "spo2_acclimation",
+      "description": "Blood oxygen (SpO2) and altitude acclimation for one day."
+    },
+    {
+      "name": "weight",
+      "description": "Weight and body composition entries for a date range."
+    },
+    {
+      "name": "weight_goal",
+      "description": "Weight goals in effect during a date range."
+    },
+    {
+      "name": "vo2max",
+      "description": "Daily VO2 max (MaxMET) values. Optional sport filter, e.g. [\"RUNNING\"] or [\"CYCLING\"]. Readings are only recorded on some days, so use a wide date range."
+    },
+    {
+      "name": "fitness_age",
+      "description": "Fitness age and the factors behind it."
+    },
+    {
+      "name": "heart_rate_zones",
+      "description": "The user's configured heart rate zones."
+    },
+    {
+      "name": "nutrition",
+      "description": "Food log and nutrition goals for one day."
+    },
+    {
+      "name": "menstrual_cycle",
+      "description": "Menstrual cycle summary; detailed=True returns the detailed day view."
+    },
+    {
+      "name": "user_settings",
+      "description": "User settings: units, height, weight, birth date, sleep schedule, etc."
+    },
+    {
+      "name": "activities",
+      "description": "Search activities, newest first. activity_type e.g. running, cycling, swimming (see activity_types). compact=True returns the common fields, including pace, heart rate zone seconds, cadence, stride and training effect; compact=False returns every field (including the owner's name and GPS start/end points). Use activity_detail for laps."
+    },
+    {
+      "name": "activity_detail",
+      "description": "Full summary of one activity: splits, heart rate, pace, training effect."
+    },
+    {
+      "name": "activity_workouts",
+      "description": "Workouts linked to one activity."
+    },
+    {
+      "name": "activity_summary_range",
+      "description": "Wellness activity records (e.g. breathwork) in a date range. This is NOT a workout summary; use activities for runs, rides and other workouts."
+    },
+    {
+      "name": "activity_types",
+      "description": "All supported activity types (the typeKey works as activities' activity_type)."
+    },
+    {
+      "name": "download_activity_file",
+      "description": "Download one activity's original file (FIT, usually zipped) to the local Downloads/garmin folder and return its path. Writes a local file only; nothing changes in Garmin Connect."
+    }
+  ],
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  }
+}

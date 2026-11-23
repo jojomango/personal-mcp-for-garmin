@@ -1,0 +1,33 @@
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Secrets — never commit keys or tokens
+.env
+.env.*
+*.key
+personal_api_key
+.garminconnect/
+.mcp.json
+
+# Garmin's API spec (copied from their site; link to it instead of redistributing)
+docs/personal-api-openapi.json
+
+# Downloaded activity files
+*.fit
+*.zip
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Local interpreter pin (machine-specific; the package supports Python >= 3.10)
+.python-version
+
+# Built desktop extensions
+*.mcpb
