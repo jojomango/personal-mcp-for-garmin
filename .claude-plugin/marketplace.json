@@ -1,0 +1,14 @@
+{
+  "name": "jojomango",
+  "owner": {
+    "name": "jojomango",
+    "url": "https://github.com/jojomango"
+  },
+  "plugins": [
+    {
+      "name": "personal-mcp-for-garmin",
+      "source": "./",
+      "description": "Read-only access to your own Garmin Connect data via Garmin's official Personal API. Bring your own key."
+    }
+  ]
+}

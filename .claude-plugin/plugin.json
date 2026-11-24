@@ -1,0 +1,44 @@
+{
+  "name": "personal-mcp-for-garmin",
+  "displayName": "Personal Data for Garmin Connect (unofficial)",
+  "version": "0.4.0",
+  "description": "Read-only access to your own Garmin Connect data (sleep, HRV, Body Battery, workouts) via Garmin's official Personal API. Bring your own key. Not affiliated with Garmin.",
+  "author": {
+    "name": "jojomango",
+    "url": "https://github.com/jojomango"
+  },
+  "homepage": "https://github.com/jojomango/personal-mcp-for-garmin",
+  "repository": "https://github.com/jojomango/personal-mcp-for-garmin",
+  "license": "MIT",
+  "keywords": ["garmin-connect", "health", "fitness", "sleep", "running", "hrv", "mcp"],
+  "icon": "./icon.png",
+  "documentationUrl": "https://github.com/jojomango/personal-mcp-for-garmin#readme",
+  "supportUrl": "https://github.com/jojomango/personal-mcp-for-garmin/issues",
+  "privacyPolicyUrl": "https://github.com/jojomango/personal-mcp-for-garmin/blob/main/PRIVACY.md",
+  "userConfig": {
+    "api_key": {
+      "type": "string",
+      "title": "Garmin Personal API key",
+      "description": "Create it at connect.garmin.com/app/settings/personalApiToken (shown only once). For your own use only; never share it.",
+      "sensitive": true,
+      "required": true
+    },
+    "region": {
+      "type": "string",
+      "title": "Account region",
+      "description": "global for most accounts; cn for China-region (garmin.cn) accounts.",
+      "default": "global",
+      "required": false
+    }
+  },
+  "mcpServers": {
+    "garmin": {
+      "command": "uvx",
+      "args": ["personal-mcp-for-garmin==0.4.0"],
+      "env": {
+        "GARMIN_API_KEY": "${user_config.api_key}",
+        "GARMIN_REGION": "${user_config.region}"
+      }
+    }
+  }
+}

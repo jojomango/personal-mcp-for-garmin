@@ -9,3 +9,4 @@ tests/
 docs/
 *.mcpb
 .DS_Store
+.claude-plugin/

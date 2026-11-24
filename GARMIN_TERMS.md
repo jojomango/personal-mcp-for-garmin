@@ -34,7 +34,7 @@ to their own data, and *"is not intended for commercial applications serving mul
 - **Bring your own key.** This project ships no key and runs no shared server. Each user creates their
   own key and runs the server on their own computer, so it is a tool *you* operate.
 - **Never share your key.** Don't paste it into issues or chats, and don't commit it. The setup command
-  stores it outside the repository (`~/.config/connect-personal-mcp/`, permissions 600); the desktop
+  stores it outside the repository (`~/.config/personal-mcp-for-garmin/`, permissions 600); the desktop
   extension stores it in your operating system's secure storage.
 - **Don't turn this into a hosted service.** Running it as a server that holds other people's keys
   would conflict with the terms above. Multi-user services need Garmin's business developer program.
@@ -68,7 +68,7 @@ Garmin 的 [Personal API FAQ](https://developer.garmin.com/gc-developer-program/
 - **自備 key：** 本專案不附任何 key，也不架設共用伺服器。每位使用者自己產生 key、
   在自己的電腦上執行，所以這是「你自己操作的工具」。
 - **絕不分享 key：** 不要貼到 issue 或聊天裡，也不要 commit。設定指令會把 key 存在 repo 之外
-  （`~/.config/connect-personal-mcp/`，權限 600）；桌面擴充套件則存在作業系統的安全儲存區。
+  （`~/.config/personal-mcp-for-garmin/`，權限 600）；桌面擴充套件則存在作業系統的安全儲存區。
 - **不要改成雲端服務：** 若架成保管別人 key 的伺服器，會違反上述條款。
   多使用者服務需要申請 Garmin 的企業開發者方案。
 - **溫和使用 API：** 5 分鐘內的相同請求會直接用快取結果（`GARMIN_CACHE_TTL`），

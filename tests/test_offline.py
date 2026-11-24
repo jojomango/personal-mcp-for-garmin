@@ -81,8 +81,8 @@ class OfflineTests(unittest.TestCase):
             "GARMIN_MCP_CONFIG_DIR": os.path.join(cls.tmp, "config"),
             "GARMIN_DOWNLOAD_DIR": os.path.join(cls.tmp, "downloads"),
         })
-        from connect_personal_mcp import api as api_mod, server
-        api_mod._LEGACY_KEY_FILE = Path(cls.tmp, "no-legacy-key")  # never read a real key on the dev machine
+        from personal_mcp_for_garmin import api as api_mod, server
+        api_mod._LEGACY_KEY_FILES = (Path(cls.tmp, "no-legacy-key"),)  # never read a real key on the dev machine
         cls.api_mod, cls.server = api_mod, server
 
     @classmethod
@@ -138,6 +138,10 @@ class OfflineTests(unittest.TestCase):
         os.environ["GARMIN_API_KEY"] = ""
         self.assertIn("No Garmin Personal API key", self.server.user_settings()["error"])
 
+    def test_unfilled_plugin_placeholder_is_ignored(self):
+        os.environ["GARMIN_API_KEY"] = "${user_config.api_key}"
+        self.assertIn("No Garmin Personal API key", self.server.user_settings()["error"])
+
     def test_download_writes_file(self):
         r = self.server.download_activity_file(activity_id=123)["data"]
         self.assertTrue(Path(r["saved_to"]).read_bytes().startswith(b"PK"))
@@ -153,6 +157,17 @@ class OfflineTests(unittest.TestCase):
         manifest = json.loads(Path(__file__).parents[1].joinpath("manifest.json").read_text())
         tools = asyncio.run(self.server.mcp.list_tools())
         self.assertEqual({t["name"] for t in manifest["tools"]}, {t.name for t in tools})
+
+    def test_versions_match(self):
+        root = Path(__file__).parents[1]
+        from personal_mcp_for_garmin import __version__
+        plugin = json.loads(root.joinpath(".claude-plugin", "plugin.json").read_text())
+        manifest = json.loads(root.joinpath("manifest.json").read_text())
+        self.assertEqual(plugin["version"], __version__)
+        self.assertEqual(manifest["version"], __version__)
+        self.assertIn(f'version = "{__version__}"', root.joinpath("pyproject.toml").read_text())
+        # the plugin must launch exactly the released package version
+        self.assertEqual(plugin["mcpServers"]["garmin"]["args"], [f"personal-mcp-for-garmin=={__version__}"])
 
 
 if __name__ == "__main__":

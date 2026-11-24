@@ -1,9 +1,9 @@
 """Save your Garmin Personal API key. Run it yourself in a terminal:
 
-    uv run connect-personal-mcp-setup
+    uv run personal-mcp-for-garmin-setup
 
 Create the key at https://connect.garmin.com/app/settings/personalApiToken (it is shown only once).
-It is verified with Garmin first, then saved to ~/.config/connect-personal-mcp/personal_api_key
+It is verified with Garmin first, then saved to ~/.config/personal-mcp-for-garmin/personal_api_key
 with permissions 600. The key stays on this computer.
 """
 

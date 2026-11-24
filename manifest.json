@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/dist/mcpb-manifest-v0.4.schema.json",
   "manifest_version": "0.4",
-  "name": "connect-personal-mcp",
+  "name": "personal-mcp-for-garmin",
   "display_name": "Personal Data for Garmin Connect (unofficial)",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Read-only access to your own Garmin Connect data (sleep, HRV, Body Battery, workouts) via Garmin's official Personal API. Bring your own key.",
   "long_description": "Unofficial; not affiliated with or endorsed by Garmin. Runs on your computer and talks only to Garmin's Personal API using your own Personal API key, which stays in your operating system's secure storage. All tools are read-only and every result is attributed to Garmin. Your key is for your own use only under Garmin's Personal API terms; never share it. Create a key at https://connect.garmin.com/app/settings/personalApiToken",
   "author": {
@@ -12,10 +12,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jojomango/connect-personal-mcp"
+    "url": "https://github.com/jojomango/personal-mcp-for-garmin"
   },
-  "homepage": "https://github.com/jojomango/connect-personal-mcp",
-  "support": "https://github.com/jojomango/connect-personal-mcp/issues",
+  "homepage": "https://github.com/jojomango/personal-mcp-for-garmin",
+  "support": "https://github.com/jojomango/personal-mcp-for-garmin/issues",
   "license": "MIT",
   "keywords": [
     "garmin-connect",
@@ -26,18 +26,18 @@
     "hrv"
   ],
   "privacy_policies": [
-    "https://github.com/jojomango/connect-personal-mcp/blob/main/PRIVACY.md"
+    "https://github.com/jojomango/personal-mcp-for-garmin/blob/main/PRIVACY.md"
   ],
   "server": {
     "type": "uv",
-    "entry_point": "src/connect_personal_mcp/server.py",
+    "entry_point": "src/personal_mcp_for_garmin/server.py",
     "mcp_config": {
       "command": "uv",
       "args": [
         "run",
         "--directory",
         "${__dirname}",
-        "connect-personal-mcp"
+        "personal-mcp-for-garmin"
       ],
       "env": {
         "GARMIN_API_KEY": "${user_config.api_key}",

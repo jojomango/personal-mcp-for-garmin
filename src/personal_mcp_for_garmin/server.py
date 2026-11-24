@@ -25,7 +25,7 @@ DOWNLOAD_DIR = Path(os.path.expanduser(os.getenv("GARMIN_DOWNLOAD_DIR", "~/Downl
 DATA_SOURCE = "Garmin"
 
 mcp = MCPServer(
-    "connect-personal",
+    "personal-mcp-for-garmin",
     instructions=(
         "Read-only access to the user's own Garmin Connect health and activity data through Garmin's "
         "official Personal API. Dates are YYYY-MM-DD, 'today' or 'yesterday'. For several days, prefer "
@@ -93,7 +93,7 @@ def api() -> PersonalAPI:
         raise GarminAPIError(
             None,
             f"No Garmin Personal API key configured. Create one at {KEY_PAGE}, then run "
-            "`uv run connect-personal-mcp-setup` (or set GARMIN_API_KEY).",
+            "`uv run personal-mcp-for-garmin-setup` (or set GARMIN_API_KEY).",
         )
     return PersonalAPI(key)
 

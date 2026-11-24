@@ -1,15 +1,16 @@
 # Privacy Policy
 
-_Last updated: 2026-11-23_
+_Last updated: 2026-11-24_
 
-connect-personal-mcp is software that runs **on your own computer**. The author does not operate
+personal-mcp-for-garmin is software that runs **on your own computer**. The author does not operate
 any server for it and does not receive, store or see your data or your API key.
 
 ## What the software accesses
 
 - **Your Garmin Personal API key**, which you provide. It is stored locally: in
-  `~/.config/connect-personal-mcp/personal_api_key` (file permissions 600) when you use the setup
-  command, or in your operating system's secure storage when you use the desktop extension.
+  `~/.config/personal-mcp-for-garmin/personal_api_key` (file permissions 600) when you use the setup
+  command, in Claude Code's secure credential store when you install the Claude Code plugin, or in
+  your operating system's secure storage when you use the desktop extension.
 - **Your own Garmin Connect data** (health, sleep, activity and related data), read-only, only when
   your MCP client calls one of the tools.
 

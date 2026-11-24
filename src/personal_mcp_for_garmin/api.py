@@ -23,9 +23,13 @@ from typing import Any
 
 from . import __version__
 
-CONFIG_DIR = Path(os.path.expanduser(os.getenv("GARMIN_MCP_CONFIG_DIR", "~/.config/connect-personal-mcp")))
+CONFIG_DIR = Path(os.path.expanduser(os.getenv("GARMIN_MCP_CONFIG_DIR", "~/.config/personal-mcp-for-garmin")))
 KEY_FILE = CONFIG_DIR / "personal_api_key"
-_LEGACY_KEY_FILE = Path(os.path.expanduser("~/.config/garmin-mcp/personal_api_key"))  # pre-0.3 location
+# Older locations, still read so existing users keep working after upgrading.
+_LEGACY_KEY_FILES = (
+    Path(os.path.expanduser("~/.config/connect-personal-mcp/personal_api_key")),  # 0.3.x
+    Path(os.path.expanduser("~/.config/garmin-mcp/personal_api_key")),  # pre-0.3
+)
 
 KEY_PAGE = "https://connect.garmin.com/app/settings/personalApiToken"
 _BASES = {
@@ -34,7 +38,7 @@ _BASES = {
 }
 TOKEN_PATH = "/personalapitoken-service/personal-api/personal-api-key/token"
 TOKEN_TTL = 23 * 3600  # docs say 24h; renew an hour early
-USER_AGENT = f"connect-personal-mcp/{__version__} (personal use)"
+USER_AGENT = f"personal-mcp-for-garmin/{__version__} (personal use)"
 # Garmin may throttle without notice, so identical requests within this window reuse the result.
 CACHE_TTL = float(os.getenv("GARMIN_CACHE_TTL", "300"))
 
@@ -45,20 +49,27 @@ class GarminAPIError(Exception):
         self.status = status
 
 
+def _env(name: str) -> str:
+    """Read an environment variable, treating an unfilled placeholder such as
+    ``${user_config.api_key}`` (left by a client when the user skipped a setting) as unset."""
+    value = os.getenv(name, "").strip()
+    return "" if value.startswith("${") else value
+
+
 def base_url() -> str:
     if os.getenv("GARMIN_API_BASE"):  # used by the offline tests
         return os.environ["GARMIN_API_BASE"].rstrip("/")
-    region = os.getenv("GARMIN_REGION", "global").strip().lower() or "global"
+    region = _env("GARMIN_REGION").lower() or "global"
     if region not in _BASES:
         raise GarminAPIError(None, f"Unknown GARMIN_REGION {region!r}; use 'global' or 'cn'.")
     return _BASES[region]
 
 
 def load_api_key() -> str | None:
-    key = os.getenv("GARMIN_API_KEY", "").strip()
+    key = _env("GARMIN_API_KEY")
     if key:
         return key
-    for f in (KEY_FILE, _LEGACY_KEY_FILE):
+    for f in (KEY_FILE, *_LEGACY_KEY_FILES):
         if f.is_file() and (k := f.read_text().strip()):
             return k
     return None
@@ -115,7 +126,7 @@ class PersonalAPI:
         status, body, _ = self._send(req)
         if status in (401, 403):
             raise GarminAPIError(status, f"API key is invalid, expired or deleted. Create a new one at {KEY_PAGE} "
-                                         "and run `uv run connect-personal-mcp-setup`.")
+                                         "and run `uv run personal-mcp-for-garmin-setup`.")
         if status >= 400:
             raise GarminAPIError(status, f"Could not get an access token (HTTP {status}): "
                                          f"{body[:300].decode('utf-8', 'replace')}")

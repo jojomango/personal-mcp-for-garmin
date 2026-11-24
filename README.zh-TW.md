@@ -1,4 +1,4 @@
-# connect-personal-mcp
+# personal-mcp-for-garmin
 
 **非官方、唯讀的 MCP server，讓 Claude 讀取你自己的 Garmin Connect™ 資料。**
 使用 Garmin 官方 [Personal API](https://developer.garmin.com/gc-developer-program/personal/personal-api/)，
@@ -24,28 +24,37 @@
 
 ## 2. 安裝
 
-### 方式 A：Claude Desktop 擴充套件（一鍵安裝）
+每種方式都需要先安裝 [uv](https://docs.astral.sh/uv/)（`curl -LsSf https://astral.sh/uv/install.sh | sh`）。
 
-安裝 `connect-personal-mcp` 擴充套件，在擴充套件設定裡貼上 key；key 會存在作業系統的安全儲存區。
-*（上架審核中；在那之前可以到 Releases 頁面下載 `.mcpb` 檔，用 Claude Desktop 開啟。）*
+> [!CAUTION]
+> 不要把 key 貼到跟 Claude 或任何 AI 的對話裡，只在下面指定的地方輸入。
 
-### 方式 B：從原始碼安裝（Claude Code、Claude Desktop 或任何 MCP 用戶端）
+### 方式 A：Claude Code plugin（建議）
 
-需要先安裝 [uv](https://docs.astral.sh/uv/)。
+在 Claude Code 裡輸入：
 
-```bash
-git clone https://github.com/jojomango/connect-personal-mcp.git
-cd connect-personal-mcp
-uv run connect-personal-mcp-setup     # 貼上 key：先向 Garmin 驗證，成功才存到 repo 之外
+```
+/plugin marketplace add jojomango/personal-mcp-for-garmin
+/plugin install personal-mcp-for-garmin@jojomango
 ```
 
-**Claude Code：**
+Claude Code 會用遮罩欄位詢問 key，並存在它的安全憑證儲存區，不會寫進任何設定檔。
+之後要更換 key：打開 `/plugin`，選這個 plugin，再選 **Configure**。
+
+### 方式 B：Codex、Claude Desktop 或其他 MCP 用戶端
+
+先在你自己的 Terminal 存一次 key（輸入時不顯示；先向 Garmin 驗證，成功後才存到
+`~/.config/personal-mcp-for-garmin/`，權限 600）：
 
 ```bash
-claude mcp add garmin --scope user -- uv run --directory "$PWD" connect-personal-mcp
+uvx --from personal-mcp-for-garmin personal-mcp-for-garmin-setup
 ```
 
-請用 `--scope user`，設定才會存在你的家目錄，不會進到 repo 裡。
+**Codex CLI：**
+
+```bash
+codex mcp add garmin -- uvx personal-mcp-for-garmin
+```
 
 **Claude Desktop**（`claude_desktop_config.json`）：
 
@@ -53,12 +62,19 @@ claude mcp add garmin --scope user -- uv run --directory "$PWD" connect-personal
 {
   "mcpServers": {
     "garmin": {
-      "command": "uv",
-      "args": ["run", "--directory", "/絕對路徑/connect-personal-mcp", "connect-personal-mcp"]
+      "command": "uvx",
+      "args": ["personal-mcp-for-garmin"]
     }
   }
 }
 ```
+
+以上設定都不含你的 key。
+
+### 方式 C：Claude Desktop 擴充套件檔
+
+到 [Releases](https://github.com/jojomango/personal-mcp-for-garmin/releases) 頁面下載 `.mcpb` 檔，
+用 Claude Desktop 開啟。它會詢問 key，並存在作業系統的安全儲存區。
 
 接著試試：「我這週睡得怎麼樣？」或「比較我最近三次跑步的心率」。
 
@@ -93,7 +109,7 @@ claude mcp add garmin --scope user -- uv run --directory "$PWD" connect-personal
 | `GARMIN_REGION` | `global` | 中國大陸區（garmin.cn）帳號設為 `cn` |
 | `GARMIN_CACHE_TTL` | `300` | 相同查詢重複使用結果的秒數（0 為關閉） |
 | `GARMIN_DOWNLOAD_DIR` | `~/Downloads/garmin` | FIT 檔下載位置 |
-| `GARMIN_MCP_CONFIG_DIR` | `~/.config/connect-personal-mcp` | 設定指令存放 key 的位置 |
+| `GARMIN_MCP_CONFIG_DIR` | `~/.config/personal-mcp-for-garmin` | 設定指令存放 key 的位置 |
 
 ## 安全與隱私
 
@@ -105,7 +121,15 @@ claude mcp add garmin --scope user -- uv run --directory "$PWD" connect-personal
 ```bash
 uv run python -m unittest discover -s tests   # 用模擬的 Garmin API 跑離線測試
 npx @anthropic-ai/mcpb pack                    # 打包桌面擴充套件（.mcpb）
+claude plugin validate --strict .              # 檢查 Claude Code plugin 設定
 ```
+
+要執行本機程式碼而不是已發布的套件：先用 `uv run personal-mcp-for-garmin-setup` 存 key，再執行
+`claude mcp add garmin --scope user -- uv run --directory "$PWD" personal-mcp-for-garmin`。
+
+發布新版：更新 `pyproject.toml`、`src/personal_mcp_for_garmin/__init__.py`、`manifest.json`
+和 `.claude-plugin/plugin.json` 的版本號（包含 `uvx` 固定的版本，測試會檢查是否一致），
+再推送 `vX.Y.Z` tag，GitHub Actions 就會用 Trusted Publishing 發布到 PyPI。
 
 ## 授權
 
