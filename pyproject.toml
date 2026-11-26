@@ -1,6 +1,6 @@
 [project]
 name = "personal-mcp-for-garmin"
-version = "0.4.0"
+version = "0.4.1"
 description = "Unofficial, read-only MCP server for your own Garmin Connect data via Garmin's official Personal API"
 readme = "README.md"
 license = "MIT"

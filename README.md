@@ -115,6 +115,19 @@ respiration are not available in the Personal API, so they are not included.
 | `GARMIN_DOWNLOAD_DIR` | `~/Downloads/garmin` | Where `download_activity_file` saves files |
 | `GARMIN_MCP_CONFIG_DIR` | `~/.config/personal-mcp-for-garmin` | Where the setup command stores the key |
 
+## What the plugin runs and connects to
+
+- **Starts:** `uvx personal-mcp-for-garmin==<version>`, pinned to the exact version in
+  `.claude-plugin/plugin.json`. The first time, uv downloads that package and its dependencies
+  (the MCP Python SDK) from **PyPI** and caches them; this source code is what gets published there.
+- **Connects to:** only Garmin's Personal API (`personal.connectapi.garmin.com`, or
+  `personal.connectapi.garmin.cn` for China-region accounts), and only when a tool is called. It
+  exchanges your key for an access token, then reads your data. Nothing runs in the background.
+- **Writes:** nothing, except that `download_activity_file` saves FIT files to `~/Downloads/garmin`
+  (or `GARMIN_DOWNLOAD_DIR`). Results are cached in memory for 5 minutes.
+- **Never:** sends data anywhere else, collects analytics or telemetry, changes your Garmin account,
+  or changes Claude's settings or permissions.
+
 ## Security and privacy
 
 - Your key never enters this repository. If you ever expose it, delete it on Garmin Connect at once:

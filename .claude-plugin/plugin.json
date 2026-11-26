@@ -1,7 +1,7 @@
 {
   "name": "personal-mcp-for-garmin",
   "displayName": "Personal Data for Garmin Connect (unofficial)",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Read-only access to your own Garmin Connect data (sleep, HRV, Body Battery, workouts) via Garmin's official Personal API. Bring your own key. Not affiliated with Garmin.",
   "author": {
     "name": "jojomango",
@@ -34,7 +34,7 @@
   "mcpServers": {
     "garmin": {
       "command": "uvx",
-      "args": ["personal-mcp-for-garmin==0.4.0"],
+      "args": ["personal-mcp-for-garmin==0.4.1"],
       "env": {
         "GARMIN_API_KEY": "${user_config.api_key}",
         "GARMIN_REGION": "${user_config.region}"

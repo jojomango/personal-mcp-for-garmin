@@ -3,7 +3,7 @@
   "manifest_version": "0.4",
   "name": "personal-mcp-for-garmin",
   "display_name": "Personal Data for Garmin Connect (unofficial)",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Read-only access to your own Garmin Connect data (sleep, HRV, Body Battery, workouts) via Garmin's official Personal API. Bring your own key.",
   "long_description": "Unofficial; not affiliated with or endorsed by Garmin. Runs on your computer and talks only to Garmin's Personal API using your own Personal API key, which stays in your operating system's secure storage. All tools are read-only and every result is attributed to Garmin. Your key is for your own use only under Garmin's Personal API terms; never share it. Create a key at https://connect.garmin.com/app/settings/personalApiToken",
   "author": {

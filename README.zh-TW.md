@@ -111,6 +111,16 @@ codex mcp add garmin -- uvx personal-mcp-for-garmin
 | `GARMIN_DOWNLOAD_DIR` | `~/Downloads/garmin` | FIT 檔下載位置 |
 | `GARMIN_MCP_CONFIG_DIR` | `~/.config/personal-mcp-for-garmin` | 設定指令存放 key 的位置 |
 
+## Plugin 會執行與連線的項目
+
+- **啟動：** 執行 `uvx personal-mcp-for-garmin==<版本>`，版本固定為 `.claude-plugin/plugin.json` 裡的確切版本。
+  第一次啟動時，uv 會從 **PyPI** 下載這個套件和它的相依套件（MCP Python SDK）並快取；發布到 PyPI 的就是本 repo 的原始碼。
+- **連線：** 只連到 Garmin Personal API（`personal.connectapi.garmin.com`，中國大陸區帳號為
+  `personal.connectapi.garmin.cn`），而且只在工具被呼叫時連線：先用 key 換取 access token，再讀取你的資料。不會在背景執行任何動作。
+- **寫入：** 除了 `download_activity_file` 會把 FIT 檔存到 `~/Downloads/garmin`（或 `GARMIN_DOWNLOAD_DIR`）之外，
+  不寫入任何檔案。查詢結果在記憶體中快取 5 分鐘。
+- **絕不：** 傳資料到其他地方、收集分析或遙測數據、修改你的 Garmin 帳號，或更改 Claude 的設定與權限。
+
 ## 安全與隱私
 
 - key 永遠不會進到這個 repo。如果不小心外流，請立刻到 Garmin Connect 刪除，所有由它發出的 token 會立即失效。

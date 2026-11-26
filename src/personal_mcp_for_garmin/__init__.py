@@ -4,4 +4,4 @@ Not affiliated with or endorsed by Garmin Ltd. Garmin and Garmin Connect are tra
 Garmin Ltd. or its subsidiaries.
 """
 
-__version__ = "0.4.0"
+__version__ = "0.4.1"
